@@ -24,7 +24,25 @@ var playSelectedFile = function (event) {
 var inputNode = document.querySelector('input')
 inputNode.addEventListener('change', playSelectedFile, false)
 
+function requestFullScreen(element) {
+    // Supports most browsers and their versions.
+    var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+
+    if (requestMethod) { // Native full screen.
+        requestMethod.call(element);
+    } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+        var wscript = new ActiveXObject("WScript.Shell");
+        if (wscript !== null) {
+            wscript.SendKeys("{F11}");
+        }
+    }
+}
+
+var elem = document.body; // Make the body go full screen.
+requestFullScreen(elem);
+
 document.addEventListener('touchstart', function (e) {
+  requestFullScreen(elem);
   if(e.touches.length == 2) {
     var pos1 = {x:e.touches[0].clientX,y:e.touches[0].clientY};
     var pos2 = {x:e.touches[1].clientX,y:e.touches[1].clientY};
